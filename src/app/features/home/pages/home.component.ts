@@ -1,17 +1,31 @@
 import { Component } from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  firstFormGroup = this._formBuilder.group({
-    firstCtrl: ['', Validators.required],
-  });
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
-  isLinear = false;
 
-  constructor(private _formBuilder: FormBuilder){}
+  public formGroup = this.formBuilder.group({
+    nodeName: ['', Validators.required]
+  });
+
+  public nodes: Array<string> = [];
+
+  constructor(private formBuilder: FormBuilder) { }
+
+  public addNewNode(): void {
+
+    const isNotEmpty = this.formGroup.value.nodeName && this.formGroup.value.nodeName?.length > 0;
+
+    const newItem = this.nodes.find((node) => node === this.formGroup.value.nodeName);
+
+    if (isNotEmpty && !newItem) {
+      this.nodes.push(this.formGroup.value.nodeName!);
+    }
+
+    this.formGroup.controls['nodeName'].setValue('');
+
+  }
 }
