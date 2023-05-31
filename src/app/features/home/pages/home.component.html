@@ -1,6 +1,49 @@
 <button mat-raised-button id="toggle-linear">
 </button>
 <mat-stepper orientation="vertical" #stepper>
+  <mat-step [stepControl]="formGroupAddNodes">
+    <form [formGroup]="formGroupAddNodes">
+      <ng-template matStepLabel>Add nodes</ng-template>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Node name" formControlName="nodeName">
+      </mat-form-field>
+      <button mat-button (click)="addNewNode()">
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
+      <div>
+        <mat-list>
+          <mat-list-item class="striped" *ngFor="let node of nodes">
+            <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
+              {{node}}
+            </button>
+            <button mat-button color="warn" class=margin-button (click)="removeNode(node)">Remove</button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div>
+        <button mat-button matStepperNext class="next-button">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="formGroupSelectFirstNode">
+    <form [formGroup]="formGroupSelectFirstNode">
+      <ng-template matStepLabel>Select first node</ng-template>
+      <div>
+        <mat-list>
+          <mat-list-item class="striped" *ngFor="let node of nodes">
+            <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
+              {{node}}
+            </button>
+            <button mat-button color="warn" class=margin-button (click)="removeNode(node)">Remove</button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div>
+        <button mat-button matStepperNext class="next-button">Next</button>
+      </div>
+    </form>
+  </mat-step>
   <mat-step [stepControl]="formGroup">
     <form [formGroup]="formGroup">
       <ng-template matStepLabel>Add nodes</ng-template>
@@ -17,7 +60,7 @@
             <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
               {{node}}
             </button>
-            <button mat-button color="warn" class=margin-button>Remove</button>
+            <button mat-button color="warn" class=margin-button (click)="removeNode(node)">Remove</button>
           </mat-list-item>
         </mat-list>
       </div>
@@ -28,23 +71,27 @@
   </mat-step>
   <mat-step [stepControl]="formGroup">
     <form [formGroup]="formGroup">
-      <ng-template matStepLabel>Fill out your address</ng-template>
+      <ng-template matStepLabel>Add nodes</ng-template>
       <mat-form-field>
-        <mat-label>Address</mat-label>
-        <input matInput formControlName="nodeName" placeholder="Ex. 1 Main St, New York, NY" required>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Node name" formControlName="nodeName">
       </mat-form-field>
+      <button mat-button (click)="addNewNode()">
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <mat-list>
+          <mat-list-item class="striped" *ngFor="let node of nodes">
+            <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
+              {{node}}
+            </button>
+            <button mat-button color="warn" class=margin-button (click)="removeNode(node)">Remove</button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div>
+        <button mat-button matStepperNext class="next-button">Next</button>
       </div>
     </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
   </mat-step>
 </mat-stepper>
