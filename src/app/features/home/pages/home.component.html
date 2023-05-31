@@ -13,7 +13,7 @@
       </button>
       <div>
         <mat-list>
-          <mat-list-item class="striped" *ngFor="let node of nodes">
+          <mat-list-item class="striped" *ngFor="let node of formGroupSelectFirstNode.value.nodes">
             <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
               {{node}}
             </button>
@@ -31,7 +31,7 @@
       <ng-template matStepLabel>Select first node</ng-template>
       <div>
         <mat-list>
-          <mat-list-item class="striped" *ngFor="let node of nodes">
+          <mat-list-item class="striped" *ngFor="let node of formGroupSelectFirstNode.value.nodes">
             <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
               {{node}}
             </button>
@@ -44,8 +44,8 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="formGroup">
-    <form [formGroup]="formGroup">
+  <mat-step [stepControl]="formGroupAddNodes">
+    <form [formGroup]="formGroupAddNodes">
       <ng-template matStepLabel>Add nodes</ng-template>
       <mat-form-field>
         <mat-label>Name</mat-label>
@@ -69,8 +69,8 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="formGroup">
-    <form [formGroup]="formGroup">
+  <mat-step [stepControl]="formGroupAddNodes">
+    <form [formGroup]="formGroupAddNodes">
       <ng-template matStepLabel>Add nodes</ng-template>
       <mat-form-field>
         <mat-label>Name</mat-label>

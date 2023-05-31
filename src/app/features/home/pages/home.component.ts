@@ -7,12 +7,14 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class HomeComponent {
 
+  initialArray: Array<string> = [];
+
   public formGroupAddNodes = this.formBuilder.group({
     nodeName: ['', Validators.required]
   });
 
   public formGroupSelectFirstNode = this.formBuilder.group({
-    nodes: [[], Validators.required]
+    nodes: [this.initialArray, Validators.required]
   });
 
   public get nodes():any{
@@ -25,10 +27,10 @@ export class HomeComponent {
 
     const isNotEmpty = this.formGroupAddNodes.value.nodeName && this.formGroupAddNodes.value.nodeName?.length > 0;
 
-    const newItem = this.nodes.find((node) => node === this.formGroupAddNodes.value.nodeName);
+    const newItem = this.formGroupSelectFirstNode.value.nodes!.find((node) => node === this.formGroupAddNodes.value.nodeName);
 
     if (isNotEmpty && !newItem) {
-      this.nodes.push(this.formGroupAddNodes.value.nodeName!);
+      this.formGroupSelectFirstNode.value.nodes!.push(this.formGroupAddNodes.value.nodeName!);
     }
 
     this.formGroupAddNodes.controls['nodeName'].setValue('');
@@ -36,6 +38,8 @@ export class HomeComponent {
   }
 
   public removeNode(nodeName: string): void {
-    this.nodes = this.nodes.filter((node) => node !== nodeName);
+    this.formGroupSelectFirstNode.controls['nodes'].setValue(
+      this.formGroupSelectFirstNode.value.nodes!.filter((node) => node !== nodeName)
+      );
   }
 }
