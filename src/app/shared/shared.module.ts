@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSnackBarModule} from '@angular/material/snack-bar';
 
 const components = [
   PageHeaderComponent
@@ -12,7 +13,8 @@ const components = [
   ],
   providers: [],
   imports: [
-    MatToolbarModule
+    MatToolbarModule,
+    MatSnackBarModule
   ],
   exports:[
     ...components

@@ -9,7 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSelectModule} from '@angular/material/select';
 
 const components = [
   HomeComponent,
@@ -25,7 +26,9 @@ const modules = [
   FormsModule,
   ReactiveFormsModule,
   MatIconModule,
-  MatListModule
+  MatListModule,
+  MatCheckboxModule,
+  MatSelectModule
 ];
 
 @NgModule({

@@ -1,50 +1,6 @@
-<button mat-raised-button id="toggle-linear">
-</button>
-<mat-stepper orientation="vertical" #stepper>
-  <mat-step [stepControl]="formGroupAddNodes">
-    <form [formGroup]="formGroupAddNodes">
-      <ng-template matStepLabel>Add nodes</ng-template>
-      <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="Node name" formControlName="nodeName">
-      </mat-form-field>
-      <button mat-button (click)="addNewNode()">
-        <mat-icon>add_circle_outline</mat-icon>
-      </button>
-      <div>
-        <mat-list>
-          <mat-list-item class="striped" *ngFor="let node of formGroupSelectFirstNode.value.nodes">
-            <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
-              {{node}}
-            </button>
-            <button mat-button color="warn" class=margin-button (click)="removeNode(node)">Remove</button>
-          </mat-list-item>
-        </mat-list>
-      </div>
-      <div>
-        <button mat-button matStepperNext class="next-button">Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="formGroupSelectFirstNode">
-    <form [formGroup]="formGroupSelectFirstNode">
-      <ng-template matStepLabel>Select first node</ng-template>
-      <div>
-        <mat-list>
-          <mat-list-item class="striped" *ngFor="let node of formGroupSelectFirstNode.value.nodes">
-            <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
-              {{node}}
-            </button>
-            <button mat-button color="warn" class=margin-button (click)="removeNode(node)">Remove</button>
-          </mat-list-item>
-        </mat-list>
-      </div>
-      <div>
-        <button mat-button matStepperNext class="next-button">Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="formGroupAddNodes">
+<mat-stepper orientation="vertical" [linear]="true">
+
+  <mat-step [stepControl]="formGroupAddNodes" [completed]="isCompletedFirst">
     <form [formGroup]="formGroupAddNodes">
       <ng-template matStepLabel>Add nodes</ng-template>
       <mat-form-field>
@@ -57,7 +13,7 @@
       <div>
         <mat-list>
           <mat-list-item class="striped" *ngFor="let node of nodes">
-            <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
+            <button mat-mini-fab color="primary">
               {{node}}
             </button>
             <button mat-button color="warn" class=margin-button (click)="removeNode(node)">Remove</button>
@@ -69,29 +25,77 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="formGroupAddNodes">
-    <form [formGroup]="formGroupAddNodes">
-      <ng-template matStepLabel>Add nodes</ng-template>
-      <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="Node name" formControlName="nodeName">
-      </mat-form-field>
-      <button mat-button (click)="addNewNode()">
-        <mat-icon>add_circle_outline</mat-icon>
-      </button>
-      <div>
-        <mat-list>
-          <mat-list-item class="striped" *ngFor="let node of nodes">
-            <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon">
-              {{node}}
-            </button>
-            <button mat-button color="warn" class=margin-button (click)="removeNode(node)">Remove</button>
-          </mat-list-item>
-        </mat-list>
-      </div>
-      <div>
-        <button mat-button matStepperNext class="next-button">Next</button>
-      </div>
-    </form>
+
+  <mat-step [completed]="isCompletedSecond">
+    <ng-template matStepLabel>Select initial node</ng-template>
+    <div>
+      <mat-list>
+        <mat-list-item class="striped" *ngFor="let node of nodes">
+          <button mat-mini-fab color="primary">
+            {{node}}
+          </button>
+          <mat-checkbox class="example-margin" (change)="setInitial($event.checked, node)"
+            [checked]="initialNodeName === node">
+            <span *ngIf="initialNodeName === node">Initial</span>
+          </mat-checkbox>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div>
+      <button mat-button matStepperNext class="next-button">Next</button>
+    </div>
   </mat-step>
+
+  <mat-step [completed]="isCompletedThird">
+    <ng-template matStepLabel>Select final nodes</ng-template>
+    <div>
+      <mat-list>
+        <mat-list-item class="striped" *ngFor="let node of nodes">
+          <button mat-mini-fab color="primary">
+            {{node}}
+          </button>
+          <mat-checkbox class="example-margin" (change)="setFinalNodes($event.checked, node)"
+            [checked]="finalNodes.includes(node)">
+            <span *ngIf="finalNodes.includes(node)">Final</span>
+          </mat-checkbox>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div>
+      <button mat-button matStepperNext class="next-button">Next</button>
+    </div>
+  </mat-step>
+
+  <mat-step>
+
+    <ng-template matStepLabel>Set transitions</ng-template>
+    <div>
+      <mat-list>
+        <div class="w-100">
+          <mat-list-item class="striped" *ngFor="let transition of transitions">
+            <div class="flex-items">
+              <button mat-mini-fab color="primary">
+                {{transition.From}}
+              </button>
+              <div class="flex-input">
+                <input matInput class="form-control" [(ngModel)]="transition.Input" placeholder="Transition">
+              </div>
+              <mat-form-field class="max-h-dropdown">
+                <mat-label>State</mat-label>
+                <mat-select [(ngModel)]="transition.To">
+                  <mat-option *ngFor="let selectedNode of nodes" [value]="selectedNode">
+                    {{selectedNode}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-list-item>
+        </div>
+      </mat-list>
+    </div>
+    <div class="run-btn">
+      <button mat-raised-button color="primary" (click)="run()">Run</button>
+    </div>
+  </mat-step>
+
 </mat-stepper>
