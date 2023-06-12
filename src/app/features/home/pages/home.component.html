@@ -1,11 +1,10 @@
 <mat-stepper orientation="vertical" [linear]="true">
 
-  <mat-step [stepControl]="formGroupAddNodes" [completed]="isCompletedFirst">
-    <form [formGroup]="formGroupAddNodes">
+  <mat-step [completed]="isCompletedFirst">
       <ng-template matStepLabel>Add nodes</ng-template>
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput placeholder="Node name" formControlName="nodeName">
+        <input matInput placeholder="Q0"[(ngModel)]="nodeName">
       </mat-form-field>
       <button mat-button (click)="addNewNode()">
         <mat-icon>add_circle_outline</mat-icon>
@@ -23,7 +22,6 @@
       <div>
         <button mat-button matStepperNext class="next-button">Next</button>
       </div>
-    </form>
   </mat-step>
 
   <mat-step [completed]="isCompletedSecond">
@@ -93,9 +91,34 @@
         </div>
       </mat-list>
     </div>
+
+  </mat-step>
+
+  <mat-step>
+
+    <ng-template matStepLabel>Run</ng-template>
+    <div>
+      <input matInput class="form-control" [(ngModel)]="word" placeholder="Transition">
+    </div>
     <div class="run-btn">
-      <button mat-raised-button color="primary" (click)="run()">Run</button>
+      <button mat-raised-button color="primary" (click)="run()" [disabled]="isDisabledRun">Run</button>
     </div>
   </mat-step>
 
 </mat-stepper>
+
+<gojs-diagram
+  [initDiagram]='initDiagram'
+  [nodeDataArray]='state.diagramNodeData'
+  [linkDataArray]='state.diagramLinkData'
+  [modelData]='state.diagramModelData'
+  [skipsDiagramUpdate]='state.skipsDiagramUpdate'
+  (modelChange)='diagramModelChange($event)'
+  [divClassName]='diagramDivClassName'>
+</gojs-diagram>
+
+<gojs-palette
+  [initPalette]='initPalette'
+  [nodeDataArray]='state.paletteNodeData'
+  [divClassName]='paletteDivClassName'>
+</gojs-palette>

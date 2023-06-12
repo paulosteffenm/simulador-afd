@@ -12,7 +12,7 @@ export class AfdService {
     return false;
   }
 
-  public run(initialState: string, finalStates: Array<string>, availableNodes: Array<string>, transitions: Array<Transition>): any {
+  public run(word: string, initialState: string, finalStates: Array<string>, availableNodes: Array<string>, transitions: Array<Transition>): any {
     const nodes: Array<NodeModel> = [];
 
     availableNodes.forEach((nodeName) => {
@@ -44,7 +44,7 @@ export class AfdService {
 
     const initialNode = nodes.find((node) => node.Initial);
     if (initialNode) {
-      initialNode.next('01');
+      initialNode.next(word);
     } else {
       throw new Error('Initial transition does not exist');
     }
