@@ -107,18 +107,4 @@
 
 </mat-stepper>
 
-<gojs-diagram
-  [initDiagram]='initDiagram'
-  [nodeDataArray]='state.diagramNodeData'
-  [linkDataArray]='state.diagramLinkData'
-  [modelData]='state.diagramModelData'
-  [skipsDiagramUpdate]='state.skipsDiagramUpdate'
-  (modelChange)='diagramModelChange($event)'
-  [divClassName]='diagramDivClassName'>
-</gojs-diagram>
-
-<gojs-palette
-  [initPalette]='initPalette'
-  [nodeDataArray]='state.paletteNodeData'
-  [divClassName]='paletteDivClassName'>
-</gojs-palette>
+<app-afd-diagram [nodeList]="nodeList" [linkList]="linkList"></app-afd-diagram>
