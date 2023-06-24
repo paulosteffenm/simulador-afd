@@ -148,9 +148,6 @@ export class HomeComponent {
         });
       })
 
-      console.log('nodeList', this.nodeList)
-      console.log('linkList', this.linkList)
-
       setTimeout(() => {
         this.showDiagram = true;
       }, 1000);
