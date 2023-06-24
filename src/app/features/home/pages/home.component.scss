@@ -57,3 +57,16 @@
   height: 300px;
   border: 1px solid black;
 }
+
+.final-step {
+  display: flex;
+  justify-items: flex-start;
+  align-items: center;
+  gap: 20px;
+}
+
+.graph-diagram {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

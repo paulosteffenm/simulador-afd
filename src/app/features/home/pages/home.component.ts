@@ -1,9 +1,8 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Transition } from 'src/app/models/Transition';
 import { AfdDiagramComponent } from 'src/app/shared/components/afd-diagram/afd-diagram.component';
-import { AfdService } from 'src/app/shared/services/afd.service';7
+import { AfdService } from 'src/app/shared/services/afd.service'; 7
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -27,6 +26,12 @@ export class HomeComponent {
 
   public word: string = '';
 
+  public showDiagram = false;
+
+  public nodeList: Array<any> = [];
+
+  public linkList: Array<any> = [];
+
   public diagram: go.Diagram | null = null
 
   public get isCompletedFirst(): boolean {
@@ -41,6 +46,10 @@ export class HomeComponent {
     return (this.finalNodes.length > 0);
   }
 
+  public get isCompletedFourth(): boolean {
+    return this.transitions.every((transition) => transition.Input && transition.To);
+  }
+
   public get isDisabledRun(): boolean {
     return (this.word.length === 0)
   }
@@ -53,7 +62,6 @@ export class HomeComponent {
   }
 
   public addNewNode(): void {
-    this.addDummyNode();
     const nodeName = this.nodeName;
 
     if (nodeName?.length === 0) {
@@ -112,11 +120,44 @@ export class HomeComponent {
   }
 
   public run(): void {
-    this.afdService.run(
-      this.word, this.initialNodeName, this.finalNodes, this.nodes, this.transitions
-    );
+    this.showDiagram = false;
 
+    try {
+      this.afdService.run(
+        this.word, this.initialNodeName, this.finalNodes, this.nodes, this.transitions
+      );
 
+      this.nodeList = [];
+      this.linkList = [];
+
+      this.nodes.forEach((node, index) => {
+        this.nodeList.push({
+          id: (index + 1),
+          text: node,
+          color: (node === this.initialNodeName) ? 'green' : (this.finalNodes.includes(node)) ? 'red' : 'white',
+          category: 'simple'
+        });
+      })
+
+      this.transitions.forEach((transition, index) => {
+        this.linkList.push({
+          id: (index + 1),
+          from: this.nodeList.find((node) => node.text === transition.From?.toString()).id,
+          to: this.nodeList.find((node) => node.text === transition.To?.toString()).id,
+          progress: true
+        });
+      })
+
+      console.log('nodeList', this.nodeList)
+      console.log('linkList', this.linkList)
+
+      setTimeout(() => {
+        this.showDiagram = true;
+      }, 1000);
+    }
+    catch (ex: any) {
+      this.openSnackBar(ex.message)
+    }
 
   }
 
@@ -129,28 +170,5 @@ export class HomeComponent {
     });
   }
 
-  private addDummyNode() {
-    const nodeData = {
-      id: '4',
-      text: '4',
-      color: 'red',
-      category: 'simple'
-    };
-    const listData = {
-      key: -3,
-      from: '3',
-      to: '4',
-    };
-    this.afdDiagramComponent.addNewNode(nodeData, listData);
-  }
 
-  public nodeList = [
-    { id: '1', text: '1', color: 'lightblue', category: 'simple' },
-    { id: '2', text: '2', color: 'orange', category: 'simple' },
-    { id: '3', text: '3', color: 'orange', category: 'simple' },
-  ];
-  public linkList = [
-    { key: -1, from: '1', to: '2' },
-    { key: -2, from: '2', to: '3' },
-  ];
 }

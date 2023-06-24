@@ -1,27 +1,27 @@
 <mat-stepper orientation="vertical" [linear]="true">
 
   <mat-step [completed]="isCompletedFirst">
-      <ng-template matStepLabel>Add nodes</ng-template>
-      <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="Q0"[(ngModel)]="nodeName">
-      </mat-form-field>
-      <button mat-button (click)="addNewNode()">
-        <mat-icon>add_circle_outline</mat-icon>
-      </button>
-      <div>
-        <mat-list>
-          <mat-list-item class="striped" *ngFor="let node of nodes">
-            <button mat-mini-fab color="primary">
-              {{node}}
-            </button>
-            <button mat-button color="warn" class=margin-button (click)="removeNode(node)">Remove</button>
-          </mat-list-item>
-        </mat-list>
-      </div>
-      <div>
-        <button mat-button matStepperNext class="next-button">Next</button>
-      </div>
+    <ng-template matStepLabel>Add nodes</ng-template>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Q0" [(ngModel)]="nodeName">
+    </mat-form-field>
+    <button mat-button (click)="addNewNode()">
+      <mat-icon>add_circle_outline</mat-icon>
+    </button>
+    <div>
+      <mat-list>
+        <mat-list-item class="striped" *ngFor="let node of nodes">
+          <button mat-mini-fab color="primary">
+            {{node}}
+          </button>
+          <button mat-button color="warn" class=margin-button (click)="removeNode(node)">Remove</button>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div>
+      <button mat-button matStepperNext class="next-button">Next</button>
+    </div>
   </mat-step>
 
   <mat-step [completed]="isCompletedSecond">
@@ -64,8 +64,7 @@
     </div>
   </mat-step>
 
-  <mat-step>
-
+  <mat-step [completed]="isCompletedFourth">
     <ng-template matStepLabel>Set transitions</ng-template>
     <div>
       <mat-list>
@@ -76,7 +75,10 @@
                 {{transition.From}}
               </button>
               <div class="flex-input">
-                <input matInput class="form-control" [(ngModel)]="transition.Input" placeholder="Transition">
+                <mat-form-field class="max-h-dropdown">
+                  <mat-label>Transition</mat-label>
+                  <input matInput class="form-control" [(ngModel)]="transition.Input" placeholder="Transition">
+                </mat-form-field>
               </div>
               <mat-form-field class="max-h-dropdown">
                 <mat-label>State</mat-label>
@@ -91,20 +93,28 @@
         </div>
       </mat-list>
     </div>
-
+    <div>
+      <button mat-button matStepperNext class="next-button">Next</button>
+    </div>
   </mat-step>
 
   <mat-step>
 
     <ng-template matStepLabel>Run</ng-template>
-    <div>
-      <input matInput class="form-control" [(ngModel)]="word" placeholder="Transition">
-    </div>
-    <div class="run-btn">
-      <button mat-raised-button color="primary" (click)="run()" [disabled]="isDisabledRun">Run</button>
+    <div class="final-step">
+      <div>
+        <mat-form-field style="margin-bottom: -1.25em">
+          <mat-label>Word</mat-label>
+          <input matInput class="form-control" [(ngModel)]="word" placeholder="0110">
+        </mat-form-field>
+      </div>
+      <div class="run-btn">
+        <button mat-raised-button color="primary" (click)="run()" [disabled]="isDisabledRun">Run</button>
+      </div>
     </div>
   </mat-step>
 
 </mat-stepper>
-
-<app-afd-diagram [nodeList]="nodeList" [linkList]="linkList"></app-afd-diagram>
+<div class="graph-diagram">
+  <app-afd-diagram *ngIf="showDiagram" [nodeList]="nodeList" [linkList]="linkList"></app-afd-diagram>
+</div>
