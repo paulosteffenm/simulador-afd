@@ -47,7 +47,7 @@ export class HomeComponent {
   }
 
   public get isCompletedFourth(): boolean {
-    return this.transitions.every((transition) => transition.Input && transition.To);
+    return this.transitions.length > 0 && this.transitions.every((transition) => transition.Input && transition.To);
   }
 
   public get isDisabledRun(): boolean {
